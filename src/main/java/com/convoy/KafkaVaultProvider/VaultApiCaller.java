@@ -14,9 +14,11 @@ public class VaultApiCaller {
     if (requestUrl.toString().isEmpty()) {
       KafkaVaultProvider.log("Expect vault request url to be non-empty, but empty string found");
       throw new ConfigException("Invalid request url");
-    } else if (xVaultToken.isEmpty()) {
-      KafkaVaultProvider.log("Expect xVaultToken to be non-empty, but empty string found");
-      throw new ConfigException("Invalid xVaultToken");
+    } else {
+      if (xVaultToken == null || xVaultToken.isEmpty()) {
+        KafkaVaultProvider.log("Expect xVaultToken to be non-empty, but empty string found");
+        throw new ConfigException("Invalid xVaultToken");
+      }
     }
 
     // start connection
