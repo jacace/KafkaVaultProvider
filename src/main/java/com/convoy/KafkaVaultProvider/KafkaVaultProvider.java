@@ -21,7 +21,7 @@ public class KafkaVaultProvider implements ConfigProvider {
   public static final String CONSTANT_X_VAULT_TOKEN = "x_vault_token";
   public static final String CONSTANT_REQUEST_URI_BASE = "request_uri_base";
   public static final String CONSTANT_SECRET_DIRECTORY = "secret_directory";
-  public static final String ENV_VAR_VAULT_ADDR = System.getenv("VAULT_ADDR");
+  public static String ENV_VAR_VAULT_ADDR = System.getenv("VAULT_ADDR");
   public static final String X_VAULT_TOKEN = System.getenv("VAULT_TOKEN");
 
   final static Logger LOGGER = Logger.getLogger(KafkaVaultProvider.class.getSimpleName());
@@ -131,6 +131,9 @@ public class KafkaVaultProvider implements ConfigProvider {
     if (configs.containsKey(CONSTANT_REQUEST_URI_BASE)) {
       localProperties.setLocalProperty(CONSTANT_REQUEST_URI_BASE, (String) configs.get(CONSTANT_REQUEST_URI_BASE));
     } else {
+      if (ENV_VAR_VAULT_ADDR == null) {
+        ENV_VAR_VAULT_ADDR = "";
+      }
       String requestURIBase = ENV_VAR_VAULT_ADDR.isEmpty() ? CONSTANT_LOCALHOST_URI : ENV_VAR_VAULT_ADDR;
       localProperties.setLocalProperty(CONSTANT_REQUEST_URI_BASE, requestURIBase);
     }
